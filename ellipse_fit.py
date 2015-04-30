@@ -2,6 +2,7 @@ from random import random
 from math import cos,pi,sin
 from sys import stdout,argv
 from time import sleep
+
 DEG=pi/180
 POP=10000
 W=640
@@ -20,7 +21,10 @@ def draw(screen,points):
 		y=int(H/2-scale*p[0]*sin(p[1]))
 		screen.punto(x,y,VERDE)
 def R(a,e,phi,theta):
-	return a*(1-e**2)/(1-e*cos(theta-phi))
+	try:
+		return a*(1-e**2)/(1-e*cos(theta-phi))
+	except:
+		return 0
 
 def SEC(vector):
 	a,e,phi=vector
@@ -49,8 +53,18 @@ def mutate(father,n):
 			max(0,min(1,father[1]+.2*(random()-0.5))),#0.1*father[1]*(random()-0.5),
 			father[2]+.1*(random()-0.5)]#0.1*father[2]*(random()-0.5)]
 
+if '-h' in argv:
+	print "Fitting an ellipse to a set of points with a genetic algorithm"
+	print ""
+	print "Usage: %s <options>"
+	print "Then introduce set of points r,theta"
+	print ""
+	print "-h\tThis help"
+	print "-v\tVerbose"
+	print "-g\tShow graphic fitting"
+	exit()
 verbose='-v' in argv
-screen='-s' in argv
+screen='-g' in argv
 ## Get points
 points = []
 while 1:
